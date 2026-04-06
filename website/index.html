@@ -1,0 +1,372 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>//small tools//</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #0e0e0e;
+      --fg:       #ebebeb;
+      --dim:      #666;
+      --faint:    #2e2e2e;
+      --accent:   #c0392b;
+      --ok:       #27ae60;
+      --code-bg:  #181818;
+      --mono:     'Courier New', Courier, monospace;
+    }
+
+    body {
+      background: var(--bg);
+      color: var(--fg);
+      font-family: var(--mono);
+      font-size: 14px;
+      line-height: 1.7;
+      max-width: 700px;
+      margin: 0 auto;
+      padding: 56px 28px 80px;
+    }
+
+    /* ── Logo ── */
+    .logo {
+      font-size: 1.5em;
+      font-weight: bold;
+      letter-spacing: 0.03em;
+    }
+    .logo .sl { color: var(--dim); }
+
+    .tagline {
+      color: var(--dim);
+      margin-top: 6px;
+      font-size: 0.9em;
+    }
+
+    /* ── Dividers ── */
+    .div {
+      color: var(--faint);
+      margin: 36px 0;
+      overflow: hidden;
+      white-space: nowrap;
+      user-select: none;
+    }
+
+    /* ── Section headings ── */
+    h2 {
+      color: var(--dim);
+      font-weight: normal;
+      font-size: 0.82em;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      margin-bottom: 18px;
+    }
+    h2::before { content: '// '; }
+    h2::after  { content: ' //'; }
+
+    /* ── Body text ── */
+    p { margin-bottom: 10px; color: var(--fg); }
+    .muted { color: var(--dim); font-size: 0.88em; }
+
+    /* ── Install box ── */
+    .install-wrap { margin: 20px 0; }
+    .install-box {
+      background: var(--code-bg);
+      border-left: 3px solid var(--accent);
+      padding: 14px 18px;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+    .install-box code {
+      flex: 1;
+      color: var(--fg);
+      font-family: var(--mono);
+      font-size: 0.88em;
+      word-break: break-all;
+    }
+    .copy-btn {
+      flex-shrink: 0;
+      background: none;
+      border: 1px solid var(--dim);
+      color: var(--dim);
+      font-family: var(--mono);
+      font-size: 0.78em;
+      padding: 4px 10px;
+      cursor: pointer;
+      transition: color 0.12s, border-color 0.12s;
+    }
+    .copy-btn:hover { border-color: var(--fg); color: var(--fg); }
+    .copy-btn.copied { border-color: var(--ok); color: var(--ok); }
+
+    /* ── Versions ── */
+    .versions { display: flex; flex-direction: column; gap: 16px; margin: 20px 0; }
+    .version {
+      padding: 16px 20px;
+      border-left: 3px solid var(--faint);
+    }
+    .version.a { border-color: var(--ok); }
+    .version.b { border-color: var(--accent); }
+    .version-tag {
+      font-size: 0.75em;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      margin-bottom: 6px;
+    }
+    .version.a .version-tag { color: var(--ok); }
+    .version.b .version-tag { color: var(--accent); }
+    .version p { color: var(--dim); margin-bottom: 4px; font-size: 0.9em; }
+    .version p strong { color: var(--fg); font-weight: normal; }
+
+    /* ── Flow diagram ── */
+    .flow { margin: 20px 0; }
+    .flow-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 6px;
+      margin-bottom: 10px;
+    }
+    .flow-row-label {
+      color: var(--dim);
+      font-size: 0.78em;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    .node {
+      border: 1px solid var(--faint);
+      background: var(--code-bg);
+      padding: 5px 12px;
+      font-size: 0.82em;
+      white-space: nowrap;
+    }
+    .node.trigger { border-color: #555; }
+    .node.armed   { border-color: var(--accent); color: var(--accent); }
+    .node.ok      { border-color: var(--ok);     color: var(--ok); }
+    .node.danger  { border-color: var(--accent); }
+    .arrow { color: var(--dim); font-size: 1em; }
+
+    /* ── Steps list ── */
+    .steps { list-style: none; margin: 14px 0; }
+    .steps li {
+      color: var(--dim);
+      padding: 5px 0 5px 20px;
+      font-size: 0.9em;
+      position: relative;
+    }
+    .steps li::before {
+      content: '·';
+      position: absolute;
+      left: 6px;
+      color: var(--dim);
+    }
+    .steps li code {
+      background: var(--code-bg);
+      padding: 1px 5px;
+      color: var(--fg);
+      font-family: var(--mono);
+    }
+
+    /* ── Warning box ── */
+    .warn {
+      border: 1px solid var(--accent);
+      padding: 11px 16px;
+      margin: 20px 0;
+      color: var(--dim);
+      font-size: 0.85em;
+    }
+    .warn::before { content: '! '; color: var(--accent); font-weight: bold; }
+
+    /* ── What gets wiped ── */
+    .wipe-grid {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin: 14px 0;
+    }
+    .wipe-tag {
+      background: var(--faint);
+      border: 1px solid #333;
+      color: var(--dim);
+      font-size: 0.78em;
+      padding: 3px 9px;
+    }
+
+    /* ── Footer ── */
+    footer {
+      margin-top: 64px;
+      padding-top: 20px;
+      border-top: 1px solid var(--faint);
+      color: var(--faint);
+      font-size: 0.78em;
+    }
+
+    @media (max-width: 500px) {
+      body { padding: 32px 16px 60px; }
+      .install-box { flex-direction: column; align-items: flex-start; }
+      .flow-row { gap: 4px; }
+    }
+  </style>
+</head>
+<body>
+
+  <div class="logo"><span class="sl">//</span>small tools<span class="sl">//</span></div>
+  <div class="tagline">digital tools for people under threat</div>
+
+  <div class="div">/ / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /</div>
+
+  <!-- ── INSTALL ── -->
+  <h2>install</h2>
+  <p>One command. Run it on your Linux machine.</p>
+  <div class="install-wrap">
+    <div class="install-box">
+      <code id="icmd">bash &lt;(curl -fsSL https://raw.githubusercontent.com/parsaaz/small-tools/main/install.sh)</code>
+      <button class="copy-btn" id="cbtn" onclick="copyCmd()">copy</button>
+    </div>
+  </div>
+  <p class="muted">Requires: Linux, X11, bash, systemd. Takes about 2 minutes.</p>
+
+  <div class="div">/ / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /</div>
+
+  <!-- ── WHAT ── -->
+  <h2>what is this</h2>
+  <p>Two tools. One for everyday threat, one for emergencies.</p>
+
+  <div class="versions">
+    <div class="version a">
+      <div class="version-tag">version a — soft clean</div>
+      <p><strong>Ctrl+Alt+S</strong> — closes messengers, wipes browser history, clears clipboard, locks screen.</p>
+      <p>Safe to use any time. Nothing is permanently deleted.</p>
+    </div>
+    <div class="version b">
+      <div class="version-tag">version b — panic wipe</div>
+      <p>Insert your panic USB → system arms. Press <strong>Ctrl+Alt+Del</strong> → wipe triggers.</p>
+      <p>Permanently destroys sensitive files. Screen shows a kernel panic to anyone watching.</p>
+    </div>
+  </div>
+
+  <div class="div">/ / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /</div>
+
+  <!-- ── HOW IT WORKS ── -->
+  <h2>how it works</h2>
+
+  <p class="flow-row-label">version a</p>
+  <div class="flow">
+    <div class="flow-row">
+      <div class="node trigger">Ctrl+Alt+S</div>
+      <div class="arrow">→</div>
+      <div class="node">close apps</div>
+      <div class="arrow">→</div>
+      <div class="node">clear history</div>
+      <div class="arrow">→</div>
+      <div class="node ok">screen locked</div>
+    </div>
+  </div>
+
+  <p class="flow-row-label" style="margin-top:20px">version b</p>
+  <div class="flow">
+    <div class="flow-row">
+      <div class="node trigger">USB inserted</div>
+      <div class="arrow">→</div>
+      <div class="node armed">ARMED</div>
+      <div class="arrow">→</div>
+      <div class="node trigger">Ctrl+Alt+Del</div>
+      <div class="arrow">→</div>
+      <div class="node danger">files wiped</div>
+      <div class="arrow">→</div>
+      <div class="node danger">kernel panic screen</div>
+    </div>
+    <div class="flow-row" style="margin-top:6px">
+      <div class="node trigger">USB removed</div>
+      <div class="arrow">→</div>
+      <div class="node ok">disarmed, nothing happens</div>
+    </div>
+  </div>
+
+  <div class="div">/ / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /</div>
+
+  <!-- ── WHAT GETS WIPED ── -->
+  <h2>what gets wiped</h2>
+  <p class="muted">Version B deletes all of the following:</p>
+  <div class="wipe-grid">
+    <span class="wipe-tag">shell history</span>
+    <span class="wipe-tag">SSH known hosts</span>
+    <span class="wipe-tag">GPG keys</span>
+    <span class="wipe-tag">Documents/</span>
+    <span class="wipe-tag">Downloads/</span>
+    <span class="wipe-tag">Desktop/</span>
+    <span class="wipe-tag">Firefox history</span>
+    <span class="wipe-tag">Firefox sessions</span>
+    <span class="wipe-tag">Firefox cookies</span>
+    <span class="wipe-tag">Chrome history</span>
+    <span class="wipe-tag">Brave history</span>
+    <span class="wipe-tag">Edge history</span>
+    <span class="wipe-tag">Telegram</span>
+    <span class="wipe-tag">Signal</span>
+    <span class="wipe-tag">Discord</span>
+    <span class="wipe-tag">clipboard</span>
+    <span class="wipe-tag">thumbnail cache</span>
+    <span class="wipe-tag">system journal</span>
+  </div>
+
+  <div class="div">/ / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /</div>
+
+  <!-- ── USB SETUP ── -->
+  <h2>your panic USB</h2>
+  <p>For version B you need a dedicated USB drive. Any drive works — the system watches for its hardware ID.</p>
+
+  <ul class="steps">
+    <li>Get a USB drive you'll carry with you</li>
+    <li>During install, plug it in when prompted — it's detected automatically</li>
+    <li>That USB is now your kill switch. Inserting it arms the system.</li>
+    <li>Removing it disarms — wipe only triggers if you also press Ctrl+Alt+Del</li>
+  </ul>
+
+  <div class="warn">Version B is irreversible. The install script runs in simulation mode by default — test before enabling real wipe.</div>
+
+  <div class="div">/ / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /</div>
+
+  <!-- ── KEYBOARD SHORTCUTS ── -->
+  <h2>shortcuts</h2>
+
+  <table style="border-collapse:collapse; width:100%; margin:14px 0;">
+    <tr>
+      <td style="padding:7px 16px 7px 0; color:var(--fg); font-size:0.9em; white-space:nowrap;">Ctrl + Alt + S</td>
+      <td style="padding:7px 0; color:var(--dim); font-size:0.9em;">Soft clean — close apps, clear history, lock screen</td>
+    </tr>
+    <tr>
+      <td style="padding:7px 16px 7px 0; color:var(--accent); font-size:0.9em; white-space:nowrap;">Ctrl + Alt + Del</td>
+      <td style="padding:7px 0; color:var(--dim); font-size:0.9em;">Confirm wipe — only triggers if USB is inserted</td>
+    </tr>
+    <tr>
+      <td style="padding:7px 16px 7px 0; color:var(--dim); font-size:0.9em; white-space:nowrap;">Ctrl + Alt + A</td>
+      <td style="padding:7px 0; color:var(--dim); font-size:0.9em;">Disarm — cancel wipe without removing USB</td>
+    </tr>
+  </table>
+
+  <footer>
+    //small tools// &nbsp;·&nbsp; hfk bremen — digital media masters &nbsp;·&nbsp; distributed through trusted networks
+  </footer>
+
+  <script>
+    function copyCmd() {
+      const raw = 'bash <(curl -fsSL https://raw.githubusercontent.com/parsaaz/small-tools/main/install.sh)';
+      navigator.clipboard.writeText(raw).then(() => {
+        const btn = document.getElementById('cbtn');
+        btn.textContent = 'copied';
+        btn.classList.add('copied');
+        setTimeout(() => { btn.textContent = 'copy'; btn.classList.remove('copied'); }, 2000);
+      }).catch(() => {
+        // fallback for older browsers
+        const el = document.createElement('textarea');
+        el.value = raw;
+        document.body.appendChild(el);
+        el.select();
+        document.execCommand('copy');
+        document.body.removeChild(el);
+      });
+    }
+  </script>
+</body>
+</html>
