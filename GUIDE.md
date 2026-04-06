@@ -64,7 +64,7 @@ The wipe only triggers if **both** conditions are met: USB inserted AND Ctrl+Alt
 **One command:**
 
 ```bash
-bash <(curl -fsSL https://raw.githubusercontent.com/parsaaz/small-tools/main/install.sh)
+bash <(curl -fsSL https://raw.githubusercontent.com/small-tools-collective/scripts/main/install.sh)
 ```
 
 Or if you have the files locally:

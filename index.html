@@ -221,7 +221,7 @@
   <p>One command. Run it on your Linux machine.</p>
   <div class="install-wrap">
     <div class="install-box">
-      <code id="icmd">bash &lt;(curl -fsSL https://raw.githubusercontent.com/parsaaz/small-tools/main/install.sh)</code>
+      <code id="icmd">bash &lt;(curl -fsSL https://raw.githubusercontent.com/small-tools-collective/scripts/main/install.sh)</code>
       <button class="copy-btn" id="cbtn" onclick="copyCmd()">copy</button>
     </div>
   </div>
@@ -351,7 +351,7 @@
 
   <script>
     function copyCmd() {
-      const raw = 'bash <(curl -fsSL https://raw.githubusercontent.com/parsaaz/small-tools/main/install.sh)';
+      const raw = 'bash <(curl -fsSL https://raw.githubusercontent.com/small-tools-collective/scripts/main/install.sh)';
       navigator.clipboard.writeText(raw).then(() => {
         const btn = document.getElementById('cbtn');
         btn.textContent = 'copied';
