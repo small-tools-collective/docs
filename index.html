@@ -68,6 +68,38 @@
     p { margin-bottom: 10px; color: var(--fg); }
     .muted { color: var(--dim); font-size: 0.88em; }
 
+    /* ── OS Tabs ── */
+    .os-tabs {
+      display: flex;
+      gap: 0;
+      margin: 28px 0 0;
+      border-bottom: 1px solid var(--faint);
+    }
+    .os-tab {
+      background: none;
+      border: 1px solid var(--faint);
+      border-bottom: none;
+      color: var(--dim);
+      font-family: var(--mono);
+      font-size: 0.82em;
+      letter-spacing: 0.1em;
+      padding: 7px 20px;
+      cursor: pointer;
+      margin-right: 4px;
+      margin-bottom: -1px;
+      transition: color 0.12s, border-color 0.12s, background 0.12s;
+    }
+    .os-tab:hover { color: var(--fg); }
+    .os-tab.active {
+      color: var(--fg);
+      border-color: var(--dim);
+      background: var(--bg);
+      border-bottom-color: var(--bg);
+    }
+
+    .os-panel { display: none; }
+    .os-panel.active { display: block; }
+
     /* ── Install box ── */
     .install-wrap { margin: 20px 0; }
     .install-box {
@@ -193,6 +225,27 @@
       padding: 3px 9px;
     }
 
+    /* ── Requirements table ── */
+    .req-list { margin: 14px 0; }
+    .req-list li {
+      color: var(--dim);
+      padding: 4px 0 4px 20px;
+      font-size: 0.9em;
+      position: relative;
+    }
+    .req-list li::before {
+      content: '·';
+      position: absolute;
+      left: 6px;
+      color: var(--dim);
+    }
+    .req-list li a {
+      color: var(--dim);
+      text-decoration: none;
+      border-bottom: 1px solid var(--faint);
+    }
+    .req-list li a:hover { color: var(--fg); border-color: var(--dim); }
+
     /* ── Footer ── */
     footer {
       margin-top: 64px;
@@ -214,151 +267,327 @@
   <div class="logo"><span class="sl">//</span>small tools<span class="sl">//</span></div>
   <div class="tagline">digital tools for people under threat</div>
 
-  <div class="div">/ / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /</div>
-
-  <!-- ── INSTALL ── -->
-  <h2>install</h2>
-  <p>One command. Run it on your Linux machine.</p>
-  <div class="install-wrap">
-    <div class="install-box">
-      <code id="icmd">bash &lt;(curl -fsSL https://raw.githubusercontent.com/small-tools-collective/scripts/main/install.sh)</code>
-      <button class="copy-btn" id="cbtn" onclick="copyCmd()">copy</button>
-    </div>
-  </div>
-  <p class="muted">Requires: Linux, X11, bash, systemd. Takes about 2 minutes.</p>
-
-  <div class="div">/ / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /</div>
-
-  <!-- ── WHAT ── -->
-  <h2>what is this</h2>
-  <p>Two tools. One for everyday threat, one for emergencies.</p>
-
-  <div class="versions">
-    <div class="version a">
-      <div class="version-tag">version a — soft clean</div>
-      <p><strong>Ctrl+Alt+S</strong> — closes messengers, wipes browser history, clears clipboard, locks screen.</p>
-      <p>Safe to use any time. Nothing is permanently deleted.</p>
-    </div>
-    <div class="version b">
-      <div class="version-tag">version b — panic wipe</div>
-      <p>Insert your panic USB → system arms. Press <strong>Ctrl+Alt+Del</strong> → wipe triggers.</p>
-      <p>Permanently destroys sensitive files. Screen shows a kernel panic to anyone watching.</p>
-    </div>
+  <!-- ── OS TABS ── -->
+  <div class="os-tabs">
+    <button class="os-tab active" onclick="switchOS('linux')">linux</button>
+    <button class="os-tab" onclick="switchOS('windows')">windows</button>
   </div>
 
-  <div class="div">/ / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /</div>
+  <!-- ════════════════════════════════════════════════ LINUX PANEL ════ -->
+  <div class="os-panel active" id="panel-linux">
 
-  <!-- ── HOW IT WORKS ── -->
-  <h2>how it works</h2>
+    <div class="div">/ / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /</div>
 
-  <p class="flow-row-label">version a</p>
-  <div class="flow">
-    <div class="flow-row">
-      <div class="node trigger">Ctrl+Alt+S</div>
-      <div class="arrow">→</div>
-      <div class="node">close apps</div>
-      <div class="arrow">→</div>
-      <div class="node">clear history</div>
-      <div class="arrow">→</div>
-      <div class="node ok">screen locked</div>
+    <!-- ── INSTALL ── -->
+    <h2>install</h2>
+    <p>One command. Run it on your Linux machine.</p>
+    <div class="install-wrap">
+      <div class="install-box">
+        <code id="icmd-linux">bash &lt;(curl -fsSL https://raw.githubusercontent.com/small-tools-collective/scripts/main/install.sh)</code>
+        <button class="copy-btn" id="cbtn-linux" onclick="copyCmd('linux')">copy</button>
+      </div>
     </div>
-  </div>
+    <p class="muted">Requires: Linux, X11, bash, systemd. Takes about 2 minutes.</p>
 
-  <p class="flow-row-label" style="margin-top:20px">version b</p>
-  <div class="flow">
-    <div class="flow-row">
-      <div class="node trigger">USB inserted</div>
-      <div class="arrow">→</div>
-      <div class="node armed">ARMED</div>
-      <div class="arrow">→</div>
-      <div class="node trigger">Ctrl+Alt+Del</div>
-      <div class="arrow">→</div>
-      <div class="node danger">files wiped</div>
-      <div class="arrow">→</div>
-      <div class="node danger">kernel panic screen</div>
+    <div class="div">/ / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /</div>
+
+    <!-- ── WHAT ── -->
+    <h2>what is this</h2>
+    <p>Two tools. One for everyday threat, one for emergencies.</p>
+
+    <div class="versions">
+      <div class="version a">
+        <div class="version-tag">version a — soft clean</div>
+        <p><strong>Ctrl+Alt+S</strong> — closes messengers, wipes browser history, clears clipboard, locks screen.</p>
+        <p>Safe to use any time. Nothing is permanently deleted.</p>
+      </div>
+      <div class="version b">
+        <div class="version-tag">version b — panic wipe</div>
+        <p>Insert your panic USB → system arms. Press <strong>Ctrl+Alt+W</strong> → wipe triggers.</p>
+        <p>Permanently destroys sensitive files. Screen shows a kernel panic to anyone watching.</p>
+      </div>
     </div>
-    <div class="flow-row" style="margin-top:6px">
-      <div class="node trigger">USB removed</div>
-      <div class="arrow">→</div>
-      <div class="node ok">disarmed, nothing happens</div>
+
+    <div class="div">/ / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /</div>
+
+    <!-- ── HOW IT WORKS ── -->
+    <h2>how it works</h2>
+
+    <p class="flow-row-label">version a</p>
+    <div class="flow">
+      <div class="flow-row">
+        <div class="node trigger">Ctrl+Alt+S</div>
+        <div class="arrow">→</div>
+        <div class="node">close apps</div>
+        <div class="arrow">→</div>
+        <div class="node">clear history</div>
+        <div class="arrow">→</div>
+        <div class="node ok">screen locked</div>
+      </div>
     </div>
-  </div>
 
-  <div class="div">/ / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /</div>
+    <p class="flow-row-label" style="margin-top:20px">version b</p>
+    <div class="flow">
+      <div class="flow-row">
+        <div class="node trigger">USB inserted</div>
+        <div class="arrow">→</div>
+        <div class="node armed">ARMED</div>
+        <div class="arrow">→</div>
+        <div class="node trigger">Ctrl+Alt+W</div>
+        <div class="arrow">→</div>
+        <div class="node danger">files wiped</div>
+        <div class="arrow">→</div>
+        <div class="node danger">kernel panic screen</div>
+      </div>
+      <div class="flow-row" style="margin-top:6px">
+        <div class="node trigger">USB removed</div>
+        <div class="arrow">→</div>
+        <div class="node ok">disarmed, nothing happens</div>
+      </div>
+    </div>
 
-  <!-- ── WHAT GETS WIPED ── -->
-  <h2>what gets wiped</h2>
-  <p class="muted">Version B deletes all of the following:</p>
-  <div class="wipe-grid">
-    <span class="wipe-tag">shell history</span>
-    <span class="wipe-tag">SSH known hosts</span>
-    <span class="wipe-tag">GPG keys</span>
-    <span class="wipe-tag">Documents/</span>
-    <span class="wipe-tag">Downloads/</span>
-    <span class="wipe-tag">Desktop/</span>
-    <span class="wipe-tag">Firefox history</span>
-    <span class="wipe-tag">Firefox sessions</span>
-    <span class="wipe-tag">Firefox cookies</span>
-    <span class="wipe-tag">Chrome history</span>
-    <span class="wipe-tag">Brave history</span>
-    <span class="wipe-tag">Edge history</span>
-    <span class="wipe-tag">Telegram</span>
-    <span class="wipe-tag">Signal</span>
-    <span class="wipe-tag">Discord</span>
-    <span class="wipe-tag">clipboard</span>
-    <span class="wipe-tag">thumbnail cache</span>
-    <span class="wipe-tag">system journal</span>
-  </div>
+    <div class="div">/ / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /</div>
 
-  <div class="div">/ / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /</div>
+    <!-- ── WHAT GETS WIPED ── -->
+    <h2>what gets wiped</h2>
+    <p class="muted">Version B deletes all of the following:</p>
+    <div class="wipe-grid">
+      <span class="wipe-tag">shell history</span>
+      <span class="wipe-tag">SSH known hosts</span>
+      <span class="wipe-tag">GPG keys</span>
+      <span class="wipe-tag">Documents/</span>
+      <span class="wipe-tag">Downloads/</span>
+      <span class="wipe-tag">Desktop/</span>
+      <span class="wipe-tag">Firefox history</span>
+      <span class="wipe-tag">Firefox sessions</span>
+      <span class="wipe-tag">Firefox cookies</span>
+      <span class="wipe-tag">Chrome history</span>
+      <span class="wipe-tag">Brave history</span>
+      <span class="wipe-tag">Edge history</span>
+      <span class="wipe-tag">Telegram</span>
+      <span class="wipe-tag">Signal</span>
+      <span class="wipe-tag">Discord</span>
+      <span class="wipe-tag">clipboard</span>
+      <span class="wipe-tag">thumbnail cache</span>
+      <span class="wipe-tag">system journal</span>
+    </div>
 
-  <!-- ── USB SETUP ── -->
-  <h2>your panic USB</h2>
-  <p>For version B you need a dedicated USB drive. Any drive works — the system watches for its hardware ID.</p>
+    <div class="div">/ / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /</div>
 
-  <ul class="steps">
-    <li>Get a USB drive you'll carry with you</li>
-    <li>During install, plug it in when prompted — it's detected automatically</li>
-    <li>That USB is now your kill switch. Inserting it arms the system.</li>
-    <li>Removing it disarms — wipe only triggers if you also press Ctrl+Alt+Del</li>
-  </ul>
+    <!-- ── USB SETUP ── -->
+    <h2>your panic USB</h2>
+    <p>For version B you need a dedicated USB drive. Any drive works — the system watches for its hardware ID.</p>
 
-  <div class="warn">Version B is irreversible. The install script runs in simulation mode by default — test before enabling real wipe.</div>
+    <ul class="steps">
+      <li>Get a USB drive you'll carry with you</li>
+      <li>During install, plug it in when prompted — it's detected automatically</li>
+      <li>That USB is now your kill switch. Inserting it arms the system.</li>
+      <li>Removing it disarms — wipe only triggers if you also press Ctrl+Alt+W</li>
+    </ul>
 
-  <div class="div">/ / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /</div>
+    <div class="warn">Version B is irreversible. The install script runs in simulation mode by default — test before enabling real wipe.</div>
 
-  <!-- ── KEYBOARD SHORTCUTS ── -->
-  <h2>shortcuts</h2>
+    <div class="div">/ / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /</div>
 
-  <table style="border-collapse:collapse; width:100%; margin:14px 0;">
-    <tr>
-      <td style="padding:7px 16px 7px 0; color:var(--fg); font-size:0.9em; white-space:nowrap;">Ctrl + Alt + S</td>
-      <td style="padding:7px 0; color:var(--dim); font-size:0.9em;">Soft clean — close apps, clear history, lock screen</td>
-    </tr>
-    <tr>
-      <td style="padding:7px 16px 7px 0; color:var(--accent); font-size:0.9em; white-space:nowrap;">Ctrl + Alt + Del</td>
-      <td style="padding:7px 0; color:var(--dim); font-size:0.9em;">Confirm wipe — only triggers if USB is inserted</td>
-    </tr>
-    <tr>
-      <td style="padding:7px 16px 7px 0; color:var(--dim); font-size:0.9em; white-space:nowrap;">Ctrl + Alt + A</td>
-      <td style="padding:7px 0; color:var(--dim); font-size:0.9em;">Disarm — cancel wipe without removing USB</td>
-    </tr>
-  </table>
+    <!-- ── KEYBOARD SHORTCUTS ── -->
+    <h2>shortcuts</h2>
+
+    <table style="border-collapse:collapse; width:100%; margin:14px 0;">
+      <tr>
+        <td style="padding:7px 16px 7px 0; color:var(--fg); font-size:0.9em; white-space:nowrap;">Ctrl + Alt + S</td>
+        <td style="padding:7px 0; color:var(--dim); font-size:0.9em;">Soft clean — close apps, clear history, lock screen</td>
+      </tr>
+      <tr>
+        <td style="padding:7px 16px 7px 0; color:var(--accent); font-size:0.9em; white-space:nowrap;">Ctrl + Alt + W</td>
+        <td style="padding:7px 0; color:var(--dim); font-size:0.9em;">Confirm wipe — only triggers if USB is inserted</td>
+      </tr>
+      <tr>
+        <td style="padding:7px 16px 7px 0; color:var(--dim); font-size:0.9em; white-space:nowrap;">Ctrl + Alt + A</td>
+        <td style="padding:7px 0; color:var(--dim); font-size:0.9em;">Disarm — cancel wipe without removing USB</td>
+      </tr>
+    </table>
+
+  </div><!-- /panel-linux -->
+
+  <!-- ════════════════════════════════════════════════ WINDOWS PANEL ════ -->
+  <div class="os-panel" id="panel-windows">
+
+    <div class="div">/ / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /</div>
+
+    <!-- ── INSTALL ── -->
+    <h2>install</h2>
+    <p>Download the repo and run the installer from PowerShell.</p>
+
+    <div class="install-wrap">
+      <div class="install-box">
+        <code id="icmd-windows">powershell -ExecutionPolicy Bypass -File windows\install.ps1</code>
+        <button class="copy-btn" id="cbtn-windows" onclick="copyCmd('windows')">copy</button>
+      </div>
+    </div>
+    <p class="muted">Or: right-click <code style="background:var(--code-bg);padding:1px 5px;">windows\install.ps1</code> → Run with PowerShell</p>
+
+    <div class="div">/ / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /</div>
+
+    <!-- ── REQUIREMENTS ── -->
+    <h2>requirements</h2>
+    <ul class="req-list">
+      <li>Windows 10 or 11</li>
+      <li>PowerShell 5.1 or later (included with Windows 10+)</li>
+      <li>AutoHotkey v2 — for keyboard shortcuts
+        <br><span style="color:var(--faint); font-size:0.85em; padding-left:4px;">install with: <code style="background:var(--code-bg);padding:1px 5px;color:var(--fg);">winget install AutoHotkey.AutoHotkey</code></span>
+      </li>
+    </ul>
+    <p class="muted">The installer checks for these and guides you if anything is missing.</p>
+
+    <div class="div">/ / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /</div>
+
+    <!-- ── WHAT ── -->
+    <h2>what is this</h2>
+    <p>Two tools. One for everyday threat, one for emergencies.</p>
+
+    <div class="versions">
+      <div class="version a">
+        <div class="version-tag">version a — soft clean</div>
+        <p><strong>Ctrl+Alt+S</strong> — closes messengers, wipes browser history, clears clipboard, locks screen.</p>
+        <p>Safe to use any time. Nothing is permanently deleted.</p>
+      </div>
+      <div class="version b">
+        <div class="version-tag">version b — panic wipe</div>
+        <p>Insert your panic USB → system arms. Press <strong>Ctrl+Alt+W</strong> → wipe triggers.</p>
+        <p>Permanently destroys sensitive files. Screen shows a fake Windows BSOD to anyone watching.</p>
+      </div>
+    </div>
+
+    <div class="div">/ / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /</div>
+
+    <!-- ── HOW IT WORKS ── -->
+    <h2>how it works</h2>
+
+    <p class="flow-row-label">version a</p>
+    <div class="flow">
+      <div class="flow-row">
+        <div class="node trigger">Ctrl+Alt+S</div>
+        <div class="arrow">→</div>
+        <div class="node">close apps</div>
+        <div class="arrow">→</div>
+        <div class="node">clear history</div>
+        <div class="arrow">→</div>
+        <div class="node ok">screen locked</div>
+      </div>
+    </div>
+
+    <p class="flow-row-label" style="margin-top:20px">version b</p>
+    <div class="flow">
+      <div class="flow-row">
+        <div class="node trigger">USB inserted</div>
+        <div class="arrow">→</div>
+        <div class="node armed">ARMED</div>
+        <div class="arrow">→</div>
+        <div class="node trigger">Ctrl+Alt+W</div>
+        <div class="arrow">→</div>
+        <div class="node danger">files wiped</div>
+        <div class="arrow">→</div>
+        <div class="node danger">BSOD screen</div>
+      </div>
+      <div class="flow-row" style="margin-top:6px">
+        <div class="node trigger">USB removed</div>
+        <div class="arrow">→</div>
+        <div class="node ok">disarmed, nothing happens</div>
+      </div>
+    </div>
+
+    <p class="muted" style="margin-top:14px">The USB watcher runs as a Task Scheduler task — starts automatically at login, no manual setup needed.</p>
+
+    <div class="div">/ / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /</div>
+
+    <!-- ── WHAT GETS WIPED ── -->
+    <h2>what gets wiped</h2>
+    <p class="muted">Version B deletes all of the following:</p>
+    <div class="wipe-grid">
+      <span class="wipe-tag">Documents\</span>
+      <span class="wipe-tag">Downloads\</span>
+      <span class="wipe-tag">Desktop\</span>
+      <span class="wipe-tag">Firefox history</span>
+      <span class="wipe-tag">Firefox sessions</span>
+      <span class="wipe-tag">Firefox cookies</span>
+      <span class="wipe-tag">Chrome history</span>
+      <span class="wipe-tag">Brave history</span>
+      <span class="wipe-tag">Edge history</span>
+      <span class="wipe-tag">Telegram</span>
+      <span class="wipe-tag">Signal</span>
+      <span class="wipe-tag">Discord</span>
+      <span class="wipe-tag">clipboard</span>
+      <span class="wipe-tag">SSH known hosts</span>
+      <span class="wipe-tag">PowerShell history</span>
+      <span class="wipe-tag">recent files list</span>
+      <span class="wipe-tag">Recycle Bin</span>
+    </div>
+
+    <div class="div">/ / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /</div>
+
+    <!-- ── USB SETUP ── -->
+    <h2>your panic USB</h2>
+    <p>For version B you need a dedicated USB drive. Any drive works — the system watches for its hardware ID.</p>
+
+    <ul class="steps">
+      <li>Get a USB drive you'll carry with you</li>
+      <li>During install, plug it in when prompted — it's detected automatically</li>
+      <li>That USB is now your kill switch. Inserting it arms the system.</li>
+      <li>Removing it disarms — wipe only triggers if you also press Ctrl+Alt+W</li>
+      <li>The watcher keeps running in the background via Task Scheduler</li>
+    </ul>
+
+    <div class="warn">Version B is irreversible. The installer runs in simulation mode by default — test before enabling real wipe. To enable, edit <code style="background:var(--code-bg);padding:1px 5px;">bin\wipe-execute.ps1</code> and set <code style="background:var(--code-bg);padding:1px 5px;">$WipeMode = "real"</code>.</div>
+
+    <div class="div">/ / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /</div>
+
+    <!-- ── KEYBOARD SHORTCUTS ── -->
+    <h2>shortcuts</h2>
+
+    <table style="border-collapse:collapse; width:100%; margin:14px 0;">
+      <tr>
+        <td style="padding:7px 16px 7px 0; color:var(--fg); font-size:0.9em; white-space:nowrap;">Ctrl + Alt + S</td>
+        <td style="padding:7px 0; color:var(--dim); font-size:0.9em;">Soft clean — close apps, clear history, lock screen</td>
+      </tr>
+      <tr>
+        <td style="padding:7px 16px 7px 0; color:var(--accent); font-size:0.9em; white-space:nowrap;">Ctrl + Alt + W</td>
+        <td style="padding:7px 0; color:var(--dim); font-size:0.9em;">Confirm wipe — only triggers if USB is inserted</td>
+      </tr>
+      <tr>
+        <td style="padding:7px 16px 7px 0; color:var(--dim); font-size:0.9em; white-space:nowrap;">Ctrl + Alt + A</td>
+        <td style="padding:7px 0; color:var(--dim); font-size:0.9em;">Disarm — cancel wipe without removing USB</td>
+      </tr>
+    </table>
+
+    <p class="muted">Shortcuts are powered by AutoHotkey and start automatically at login via the Startup folder.</p>
+
+  </div><!-- /panel-windows -->
 
   <footer>
     //small tools// &nbsp;·&nbsp; hfk bremen — digital media masters &nbsp;·&nbsp; distributed through trusted networks
   </footer>
 
   <script>
-    function copyCmd() {
-      const raw = 'bash <(curl -fsSL https://raw.githubusercontent.com/small-tools-collective/scripts/main/install.sh)';
+    function switchOS(os) {
+      document.querySelectorAll('.os-tab').forEach(t => t.classList.remove('active'));
+      document.querySelectorAll('.os-panel').forEach(p => p.classList.remove('active'));
+      document.querySelector('[onclick="switchOS(\'' + os + '\')"]').classList.add('active');
+      document.getElementById('panel-' + os).classList.add('active');
+    }
+
+    function copyCmd(os) {
+      const cmds = {
+        linux:   'bash <(curl -fsSL https://raw.githubusercontent.com/small-tools-collective/scripts/main/install.sh)',
+        windows: 'powershell -ExecutionPolicy Bypass -File windows\\install.ps1'
+      };
+      const raw = cmds[os];
+      const btnId = 'cbtn-' + os;
       navigator.clipboard.writeText(raw).then(() => {
-        const btn = document.getElementById('cbtn');
+        const btn = document.getElementById(btnId);
         btn.textContent = 'copied';
         btn.classList.add('copied');
         setTimeout(() => { btn.textContent = 'copy'; btn.classList.remove('copied'); }, 2000);
       }).catch(() => {
-        // fallback for older browsers
         const el = document.createElement('textarea');
         el.value = raw;
         document.body.appendChild(el);
